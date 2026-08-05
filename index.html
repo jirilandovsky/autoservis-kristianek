@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoservis Kristiánek — Renault Megane, Mercedes &amp; Škoda specialista</title>
+<meta name="description" content="Autoservis Kristiánek — opravy a hlavně dokonalé čištění vozů Renault Megane, Mercedes a Škoda (láskyplně 'banán'). Nejmladší mechanik v okolí.">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= SVG SPRITE / DEFS ================= -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <path id="carBodyPath" d="M20,150 C14,108 40,94 72,90 L100,60 C114,45 140,37 165,37 L253,37 C277,37 297,47 311,65 L334,90 C366,95 386,109 380,150 C380,158 372,164 362,164 L38,164 C28,164 20,158 20,150 Z"/>
+    <path id="carWindowPath" d="M121,88 L141,55 C149,46 160,42 172,42 L246,42 C259,42 269,48 277,58 L294,88 Z"/>
+    <path id="splat" d="M0,10 C-7,2 1,-9 10,-4 C19,-9 28,2 21,10 C28,18 19,29 10,24 C1,29 -7,18 0,10 Z"/>
+    <path id="drip" d="M0,0 C-3,12 4,22 0,38 C-4,50 4,58 1,72" fill="none" stroke-linecap="round"/>
+    <path id="sparkle" d="M9,0 L11.5,6.5 L18,9 L11.5,11.5 L9,18 L6.5,11.5 L0,9 L6.5,6.5 Z"/>
+
+    <symbol id="carShape" viewBox="0 0 400 200">
+      <use href="#carBodyPath"/>
+      <use href="#carWindowPath" fill="rgba(255,255,255,.18)"/>
+      <line x1="205" y1="42" x2="205" y2="88" stroke="rgba(0,0,0,.35)" stroke-width="3"/>
+      <circle cx="110" cy="150" r="27" fill="#101114"/>
+      <circle cx="110" cy="150" r="13" fill="#4d4f53"/>
+      <circle cx="300" cy="150" r="27" fill="#101114"/>
+      <circle cx="300" cy="150" r="13" fill="#4d4f53"/>
+    </symbol>
+
+    <filter id="mudFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="4" seed="12" result="bigNoise"/>
+      <feColorMatrix in="bigNoise" type="matrix"
+        values="0 0 0 0 0.20  0 0 0 0 0.13  0 0 0 0 0.06  0 0 0 1.6 -0.45" result="mudColor"/>
+      <feComposite in="mudColor" in2="SourceAlpha" operator="in" result="mudOnCar"/>
+      <feTurbulence type="turbulence" baseFrequency="0.18" numOctaves="2" seed="4" result="fineNoise"/>
+      <feColorMatrix in="fineNoise" type="matrix"
+        values="0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.03  0 0 0 1.3 -0.5" result="fineMud"/>
+      <feComposite in="fineMud" in2="SourceAlpha" operator="in" result="fineMudOnCar"/>
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="mudOnCar"/>
+        <feMergeNode in="fineMudOnCar"/>
+      </feMerge>
+    </filter>
+
+    <filter id="blurSoft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <filter id="blurGround" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+
+    <linearGradient id="renaultShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dfeeff"/>
+      <stop offset=".35" stop-color="#5f95d6"/>
+      <stop offset="1" stop-color="#1f4e8c"/>
+    </linearGradient>
+    <linearGradient id="mercedesShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".4" stop-color="#c6cacf"/>
+      <stop offset="1" stop-color="#65686d"/>
+    </linearGradient>
+    <linearGradient id="skodaShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff6cf"/>
+      <stop offset=".4" stop-color="#ffd54a"/>
+      <stop offset="1" stop-color="#e0a300"/>
+    </linearGradient>
+    <linearGradient id="familyShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe4de"/>
+      <stop offset=".4" stop-color="#e8695a"/>
+      <stop offset="1" stop-color="#8a1414"/>
+    </linearGradient>
+    <radialGradient id="reflectGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="rgba(255,255,255,.35)"/>
+      <stop offset="1" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <radialGradient id="mudPuddle" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="rgba(40,26,12,.85)"/>
+      <stop offset="1" stop-color="rgba(40,26,12,0)"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <img src="logo.png" alt="Autoservis Kristiánek logo">
+      <div class="brand-text">
+        <b>Autoservis Kristiánek</b>
+        <span>Est. dnes • od 5 let v oboru</span>
+      </div>
+    </div>
+    <nav>
+      <ul id="navList">
+        <li><a href="#about">O nás</a></li>
+        <li><a href="#services">Služby</a></li>
+        <li><a href="#gallery">Galerie</a></li>
+        <li><a href="#reviews">Recenze</a></li>
+        <li><a href="#pricing">Ceník</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-ghost">Kontakt</a>
+      <a href="#contact" class="btn btn-primary">Objednat se</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="hazard"></div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-content">
+      <span class="eyebrow">Nejmladší mechanik v okolí</span>
+      <h1>Autoservis <em>Kristiánek</em></h1>
+      <p class="hero-sub">Tvoje auto v <b>rukou profíka</b> — i když mu na pedály ještě nedosahují nohy.
+      Specializace na Renault Megane, Mercedes a Škodu (my jí láskyplně říkáme <b>„banán“</b>).</p>
+      <div class="hero-tags">
+        <span class="tag">Renault Megane</span>
+        <span class="tag">Mercedes</span>
+        <span class="tag banana">Škoda „banán“</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">🔧 Objednat mytí</a>
+        <a href="#gallery" class="btn btn-ghost">Prohlédnout galerii</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-badge">
+    <div class="stars">★★★★★</div>
+    <div>
+      <b style="font-family:var(--font-head); text-transform:uppercase; font-size:14px;">100% spokojenost</b>
+      <small>hodnotí babička, tety i rodiče</small>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-photo reveal">
+      <img src="Kiki.jpeg" alt="Kristiánek v montérkách v autoservisu, dívá se na auto na zvedáku">
+      <div class="about-photo-caption">Kristiánek při práci<span>Zvedák, montérky, plný nasazení</span></div>
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow">Kdo servis vede</span>
+      <h2>5 let zkušeností. No, spíš 5 let věku.</h2>
+      <p>Kristiánek si servis nehraje, on ho <strong>žije</strong>. Klíč mu sedí v ruce líp než lžíce, montérky nosí hrdě
+      i na hřiště a jeho oblíbená otázka rodičům zní: <strong>„Můžu si umýt tvoje auto?“</strong></p>
+      <p>Specializuje se na tři značky, kterým rozumí nejlíp — <strong>Renault Megane</strong>, <strong>Mercedes</strong>
+      a samozřejmě <strong>Škodu</strong>, které z lásky přezdívá <strong>„banán“</strong>, protože podle něj má
+      „takovej hezkej tvar jako ovoce, co má rád ke svačině“.</p>
+      <div class="brand-badges">
+        <div class="brand-badge renault"><span class="dot"></span>Renault Megane</div>
+        <div class="brand-badge mercedes"><span class="dot"></span>Mercedes</div>
+        <div class="brand-badge skoda"><span class="dot"></span>Škoda „banán“</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>5</b><span>let praxe</span></div>
+        <div class="stat"><b>3</b><span>oblíbené značky</span></div>
+        <div class="stat"><b>100%</b><span>nadšení pro auta</span></div>
+        <div class="stat"><b>1</b><span>oblíbený klíč</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Co u nás dostanete</span>
+      <h2>Služby autoservisu</h2>
+      <p>Hlavní parketa je <strong>čištění aut</strong> — tomu Kristiánek věnuje nejvíc srdce i vody. Opravy dělá jako bonus, když má chvilku mezi svačinou a odpoledním spaním.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card svc-main reveal">
+        <span class="svc-tag">Hlavní specializace</span>
+        <h3>🧽 Čištění a mytí aut</h3>
+        <p>Tady je Kristiánek ve svém živlu. Žádné bláto, prach ani pyl nemá šanci.</p>
+        <ul class="svc-list">
+          <li>Ruční mytí exteriéru s hadicí (a trochou stříkání navíc)</li>
+          <li>Leštění karoserie do zrcadlového lesku</li>
+          <li>Čištění a vysávání interiéru vč. drobků ze svačiny</li>
+          <li>Voskování „aby to svítilo jak sluníčko“</li>
+          <li>Mytí kol a diskolů kartáčkem na zoubky (v nouzi)</li>
+          <li>Speciální péče o Renault Megane, Mercedes i „banán“ Škodu</li>
+        </ul>
+      </div>
+      <div class="svc-card svc-side reveal">
+        <span class="svc-tag">Doplňkově</span>
+        <h3>🔧 Drobné opravy</h3>
+        <p>Když je auto čisté, může se i trochu opravit.</p>
+        <ul class="svc-list">
+          <li>Kontrola oleje (a hlavně jestli je auto v pořádku)</li>
+          <li>Utahování šroubků správným klíčem</li>
+          <li>Kontrola světel a „bafání“ do pneumatik</li>
+          <li>Poradenství: „tati, tohle by chtělo servis“</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard"></div>
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Před / Po</span>
+      <h2>Galerie proměn</h2>
+      <p>Přetáhni posuvník a podívej se, co dokáže pořádné umytí (nebo oprava). Tahle auta to potřebovala <em>hodně</em>.</p>
+    </div>
+
+    <div class="gallery-grid">
+
+      <!-- 1. Renault Megane -->
+      <div class="compare reveal">
+        <div class="compare-frame" data-compare>
+          <div class="compare-layer layer-before">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#101317"/>
+              <ellipse cx="200" cy="172" rx="180" ry="16" fill="url(#mudPuddle)"/>
+              <g style="--car-fill:#3a6ea5">
+                <g filter="url(#mudFilter)">
+                  <use href="#carShape" fill="#3a6ea5"/>
+                </g>
+                <use href="#splat" transform="translate(60,140) scale(1.6)" fill="#3a2513" opacity=".75" filter="url(#blurSoft)"/>
+                <use href="#splat" transform="translate(250,150) scale(2.1)" fill="#2c1c0d" opacity=".7" filter="url(#blurSoft)"/>
+                <use href="#splat" transform="translate(150,70) scale(1.3)" fill="#4a3320" opacity=".6" filter="url(#blurSoft)"/>
+                <use href="#drip" transform="translate(140,45)" stroke="#2a1c10" stroke-width="4" opacity=".7"/>
+                <use href="#drip" transform="translate(230,50)" stroke="#2a1c10" stroke-width="3" opacity=".6"/>
+                <use href="#drip" transform="translate(90,95)" stroke="#241708" stroke-width="3" opacity=".55"/>
+              </g>
+            </svg>
+          </div>
+          <div class="compare-layer layer-after">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#12161c"/>
+              <ellipse cx="200" cy="172" rx="170" ry="14" fill="url(#reflectGlow)"/>
+              <use href="#carShape" fill="url(#renaultShine)"/>
+              <g fill="#fff" opacity=".9">
+                <use href="#sparkle" transform="translate(90,55) scale(.9)"/>
+                <use href="#sparkle" transform="translate(310,70) scale(.6)"/>
+                <use href="#sparkle" transform="translate(200,30) scale(.7)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="compare-handle"></div>
+          <input type="range" class="compare-range" min="0" max="100" value="50" aria-label="Porovnat Renault Megane před a po">
+          <span class="compare-label label-before">PŘED</span>
+          <span class="compare-label label-after">PO</span>
+        </div>
+        <div class="compare-caption">
+          <h4>Renault Megane</h4>
+          <p>Po bahenní rally lesem s tátou — bláto po střechu.</p>
+        </div>
+      </div>
+
+      <!-- 2. Mercedes -->
+      <div class="compare reveal">
+        <div class="compare-frame" data-compare>
+          <div class="compare-layer layer-before">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#101317"/>
+              <ellipse cx="200" cy="172" rx="180" ry="16" fill="url(#mudPuddle)"/>
+              <g filter="url(#mudFilter)">
+                <use href="#carShape" fill="#7d8186"/>
+              </g>
+              <use href="#splat" transform="translate(180,60) scale(2.4)" fill="#6b5a2f" opacity=".55" filter="url(#blurSoft)"/>
+              <use href="#splat" transform="translate(90,120) scale(1.7)" fill="#5c4c26" opacity=".5" filter="url(#blurSoft)"/>
+              <use href="#splat" transform="translate(300,110) scale(1.9)" fill="#4f4020" opacity=".5" filter="url(#blurSoft)"/>
+              <use href="#drip" transform="translate(180,44)" stroke="#5c4c26" stroke-width="3" opacity=".55"/>
+              <use href="#drip" transform="translate(260,60)" stroke="#4f4020" stroke-width="3" opacity=".5"/>
+            </svg>
+          </div>
+          <div class="compare-layer layer-after">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#12161c"/>
+              <ellipse cx="200" cy="172" rx="170" ry="14" fill="url(#reflectGlow)"/>
+              <use href="#carShape" fill="url(#mercedesShine)"/>
+              <g fill="#fff" opacity=".9">
+                <use href="#sparkle" transform="translate(110,50) scale(.8)"/>
+                <use href="#sparkle" transform="translate(320,90) scale(.6)"/>
+                <use href="#sparkle" transform="translate(210,28) scale(.7)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="compare-handle"></div>
+          <input type="range" class="compare-range" min="0" max="100" value="50" aria-label="Porovnat Mercedes před a po">
+          <span class="compare-label label-before">PŘED</span>
+          <span class="compare-label label-after">PO</span>
+        </div>
+        <div class="compare-caption">
+          <h4>Mercedes</h4>
+          <p>Po jarní „pylové apokalypse“ na parkovišti u babičky.</p>
+        </div>
+      </div>
+
+      <!-- 3. Škoda banán -->
+      <div class="compare reveal">
+        <div class="compare-frame" data-compare>
+          <div class="compare-layer layer-before">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#101317"/>
+              <ellipse cx="200" cy="172" rx="180" ry="16" fill="url(#mudPuddle)"/>
+              <g filter="url(#mudFilter)">
+                <use href="#carShape" fill="#c9a227"/>
+              </g>
+              <use href="#splat" transform="translate(70,150) scale(2)" fill="#33230f" opacity=".7" filter="url(#blurSoft)"/>
+              <use href="#splat" transform="translate(320,145) scale(1.8)" fill="#2c1e0c" opacity=".7" filter="url(#blurSoft)"/>
+              <use href="#splat" transform="translate(200,150) scale(1.4)" fill="#3a2a12" opacity=".55" filter="url(#blurSoft)"/>
+              <ellipse cx="150" cy="78" rx="22" ry="10" fill="#5a3d18" opacity=".55" filter="url(#blurSoft)"/>
+              <ellipse cx="260" cy="82" rx="18" ry="9" fill="#4a3213" opacity=".5" filter="url(#blurSoft)"/>
+              <use href="#drip" transform="translate(120,45)" stroke="#33230f" stroke-width="3" opacity=".6"/>
+            </svg>
+          </div>
+          <div class="compare-layer layer-after">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#12161c"/>
+              <ellipse cx="200" cy="172" rx="170" ry="14" fill="url(#reflectGlow)"/>
+              <use href="#carShape" fill="url(#skodaShine)"/>
+              <g fill="#fff" opacity=".9">
+                <use href="#sparkle" transform="translate(95,60) scale(.85)"/>
+                <use href="#sparkle" transform="translate(305,75) scale(.65)"/>
+                <use href="#sparkle" transform="translate(205,32) scale(.7)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="compare-handle"></div>
+          <input type="range" class="compare-range" min="0" max="100" value="50" aria-label="Porovnat Škodu před a po">
+          <span class="compare-label label-before">PŘED</span>
+          <span class="compare-label label-after">PO</span>
+        </div>
+        <div class="compare-caption">
+          <h4>Škoda „banán“</h4>
+          <p>Po podzimním sběru listí — bláto z pole až po kliky.</p>
+        </div>
+      </div>
+
+      <!-- 4. Oprava -->
+      <div class="compare reveal">
+        <div class="compare-frame" data-compare>
+          <div class="compare-layer layer-before">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#101317"/>
+              <ellipse cx="200" cy="172" rx="180" ry="16" fill="rgba(0,0,0,.4)"/>
+              <use href="#carShape" fill="#8f8f92"/>
+              <circle cx="335" cy="95" r="10" fill="#3a1414" stroke="#c0392b" stroke-width="2"/>
+              <path d="M328,88 L342,102 M342,88 L328,102" stroke="#ff4d4d" stroke-width="2"/>
+              <path d="M280,70 L300,85 L275,95 L295,105" fill="none" stroke="#1a1a1a" stroke-width="3" opacity=".7"/>
+              <path d="M60,110 L85,118 L58,128" fill="none" stroke="#1a1a1a" stroke-width="3" opacity=".6"/>
+            </svg>
+          </div>
+          <div class="compare-layer layer-after">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+              <rect width="400" height="200" fill="#12161c"/>
+              <ellipse cx="200" cy="172" rx="170" ry="14" fill="url(#reflectGlow)"/>
+              <use href="#carShape" fill="url(#familyShine)"/>
+              <circle cx="335" cy="95" r="10" fill="#ffe9a8"/>
+              <circle cx="335" cy="95" r="16" fill="none" stroke="#ffd54a" stroke-width="1.5" opacity=".6"/>
+              <g fill="#fff" opacity=".9">
+                <use href="#sparkle" transform="translate(280,72) scale(.7)"/>
+                <use href="#sparkle" transform="translate(120,110) scale(.6)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="compare-handle"></div>
+          <input type="range" class="compare-range" min="0" max="100" value="50" aria-label="Porovnat opravu před a po">
+          <span class="compare-label label-before">PŘED</span>
+          <span class="compare-label label-after">PO</span>
+        </div>
+        <div class="compare-caption">
+          <h4>Rodinné auto — oprava</h4>
+          <p>Po „šoupnutí“ do sloupku na parkovišti. Prasklý světlomet, promáčklý blatník — spraveno.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="hazard"></div>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Co říkají zákazníci</span>
+      <h2>Recenze rodiny</h2>
+      <p>Nejpřísnější poroty se nedočkáte — a přesto samé jedničky s hvězdičkou.</p>
+    </div>
+    <div class="testi-grid">
+
+      <div class="testi-card reveal">
+        <span class="quote-mark">”</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Kristiánku, tys mi to autíčko umyl líp než dědeček za celých padesát let! Škodovku jsem nepoznávala, svítila jak sluníčko.“</p>
+        <div class="testi-who">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#d9251c,#8a1414)">V</div>
+          <div><b>Babička Vlasta</b><span>Majitelka Škody „banán“</span></div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <span class="quote-mark">”</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Objednala jsem mytí interiéru a najednou jsem v autě našla i klíče, co se ztratily před rokem. Profesionál!“</p>
+        <div class="testi-who">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#2f5fa8,#1c3b6b)">L</div>
+          <div><b>Teta Lůca</b><span>Majitelka Mercedesu</span></div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <span class="quote-mark">”</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Renault po mně vypadal jak z výlohy autosalonu. A ten úsměv od ucha k uchu k tomu dostanete zadarmo.“</p>
+        <div class="testi-who">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#ffd54a,#e0a300)">M</div>
+          <div><b>Teta Martinka</b><span>Majitelka Renaultu Megane</span></div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <span class="quote-mark">”</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Nejlepší mechanik v rodině. Sice mu ještě nedosahují nohy na pedály, ale srdcem je u toho víc než kdokoliv jiný.“</p>
+        <div class="testi-who">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#7d8186,#4a4c4f)">M</div>
+          <div><b>Maminka</b><span>Hlavní podporovatelka</span></div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <span class="quote-mark">”</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Přijel jsem s autem plným bláta z chalupy a odjížděl s leštěnkou hodnou autosalonu. A jo, přidal mi i pusu na kapotu.“</p>
+        <div class="testi-who">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#d9251c,#5f95d6)">T</div>
+          <div><b>Tatínek</b><span>Zásobovač svačin a benzínu</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<div class="price-wrap" id="pricing">
+  <section>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Ceník</span>
+        <h2>Platí se v dětské měně</h2>
+        <p>Žádné koruny — u nás se platí tím, co má Kristiánek nejradši.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card reveal">
+          <h3>Základní mytí</h3>
+          <div class="price">3 pusinky</div>
+          <p>Exteriér, kola a leštění do lesku. Ideální na rychlé osvěžení „banánu“.</p>
+        </div>
+        <div class="price-card reveal">
+          <h3>Prémiová péče</h3>
+          <div class="price">1 pohádka navíc</div>
+          <p>Mytí + voskování + luxování interiéru. Doporučeno po výletě do lesa.</p>
+        </div>
+        <div class="price-card reveal">
+          <h3>Kompletní servis</h3>
+          <div class="price">Objetí + zmrzlina</div>
+          <p>Mytí, leštění i drobná oprava. Pro opravdu náročné případy typu „šoupnutí do sloupku“.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CTA / CONTACT ================= -->
+<section class="cta" id="contact">
+  <div class="container cta-content">
+    <span class="eyebrow">Objednávka</span>
+    <h2>Domluv si termín u Kristiánka</h2>
+    <p>Napiš, jaké auto potřebuje pomoct — mytí, leštění nebo drobnou opravu — a ozveme se (respektive rodiče se ozvou).</p>
+
+    <form id="bookingForm" style="max-width:560px;margin:0 auto 30px;text-align:left;display:grid;gap:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <label style="display:block;font-family:var(--font-head);text-transform:uppercase;font-size:12px;letter-spacing:.08em;color:var(--chrome-2);margin-bottom:6px;">Jméno</label>
+          <input required type="text" name="name" placeholder="Vaše jméno" style="width:100%;padding:12px 14px;background:var(--bg-card);border:1px solid var(--line);border-radius:4px;color:var(--text);font-family:var(--font-body);font-size:16px;">
+        </div>
+        <div>
+          <label style="display:block;font-family:var(--font-head);text-transform:uppercase;font-size:12px;letter-spacing:.08em;color:var(--chrome-2);margin-bottom:6px;">Auto</label>
+          <select name="car" style="width:100%;padding:12px 14px;background:var(--bg-card);border:1px solid var(--line);border-radius:4px;color:var(--text);font-family:var(--font-body);font-size:16px;">
+            <option>Renault Megane</option>
+            <option>Mercedes</option>
+            <option>Škoda „banán“</option>
+            <option>Jiné auto</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-family:var(--font-head);text-transform:uppercase;font-size:12px;letter-spacing:.08em;color:var(--chrome-2);margin-bottom:6px;">Co potřebuje vaše auto?</label>
+        <textarea name="message" rows="3" placeholder="Např. bláto z lesa, pyl, drobná oprava…" style="width:100%;padding:12px 14px;background:var(--bg-card);border:1px solid var(--line);border-radius:4px;color:var(--text);font-family:var(--font-body);font-size:16px;resize:vertical;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="justify-self:center;">🔧 Odeslat objednávku</button>
+      <p id="formNote" style="text-align:center;color:var(--muted);font-size:14px;min-height:20px;"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="logo.png" alt="Autoservis Kristiánek logo">
+          <b>Autoservis Kristiánek</b>
+        </div>
+        <p>Nejmladší autoservis v okolí. Specialista na Renault Megane, Mercedes a Škodu „banán“. Hlavně čištění, drobné opravy jako bonus.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Kontakt</h5>
+        <ul>
+          <li>📍 Garáž u Kristiánka, Za barákem 5</li>
+          <li>📞 Ptejte se rodičů</li>
+          <li>✉️ kristianek@autoservis.dite</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Otevírací doba</h5>
+        <ul>
+          <li>Po–Pá: až po školce 🚗</li>
+          <li>So–Ne: celý den, mám prázdniny!</li>
+          <li>Polední pauza: povinný spánek 😴</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Autoservis Kristiánek. Všechna práva vyhrazena (hlavně tátovi na focení).</span>
+      <span>Vyrobeno s láskou k 5. narozeninám 🎉</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
